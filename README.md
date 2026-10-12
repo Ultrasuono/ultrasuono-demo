@@ -1,3 +1,5 @@
+[![Apri la demo Ultrasuono](https://img.shields.io/badge/▶_APRI_LA_DEMO-ULTRASUONO-283b27?style=for-the-badge&labelColor=617746)](https://ultrasuono.github.io/ultrasuono-demo/)
+
 # Ultrasuono — bozza digitale
 
 Pagina statica per la revisione, compatibile con GitHub Pages. Nessuna dipendenza di build, API o backend. Meteo simulato: 500 ambienti deterministici con variazioni continue basate sull'orario. Non rappresenta stazioni o misurazioni reali.
