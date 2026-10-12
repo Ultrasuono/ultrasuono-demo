@@ -1,0 +1,15 @@
+ULTRASUONO — sorgenti applicativi
+Copyright (c) 2026 Ultrasuono. Tutti i diritti riservati.
+
+I sorgenti applicativi di questo repository sono proprietari. Non è concessa
+una licenza open source per copiarli, modificarli o ridistribuirli.
+Permessi ulteriori richiedono l’autorizzazione dei titolari dei diritti,
+salvi i diritti inderogabili previsti dalla legge applicabile.
+
+Questa licenza non si applica ai componenti di terze parti, inclusi quelli
+nelle cartelle libraries: mantengono le proprie licenze e i propri avvisi.
+Le condizioni di distribuzione dei firmware compilati sono pubblicate
+insieme ai binari su https://ultrasuono.github.io/ultrasuono-installer/,
+nel file FIRMWARE-TERMS.txt. Tali condizioni consentono installazione,
+modifiche per uso personale e reverse engineering per il debugging
+delle modifiche, anche alle librerie LGPL.

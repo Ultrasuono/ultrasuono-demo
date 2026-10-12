@@ -1,0 +1,49 @@
+name: Build original DSP and publish demo
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check weather and native DSP
+        run: |
+          node check.mjs
+          g++ dsp/AudioProcessor.cpp dsp/check.cpp dsp/vendor/Effects/*.cpp dsp/vendor/Filters/*.cpp -Idsp -Idsp/vendor -Idsp/vendor/Utility -std=c++17 -O2 -o /tmp/check-dsp
+          /tmp/check-dsp
+      - name: Install pinned Emscripten
+        run: |
+          git clone --depth 1 https://github.com/emscripten-core/emsdk.git /tmp/emsdk
+          /tmp/emsdk/emsdk install 4.0.17
+          /tmp/emsdk/emsdk activate 4.0.17
+      - name: Build WebAssembly and check exports
+        run: |
+          source /tmp/emsdk/emsdk_env.sh
+          bash dsp/build.sh
+          node dsp/check-wasm.mjs
+          mkdir /tmp/site
+          cp index.html style.css app.js weather.mjs ultrasuono-worklet.js ultrasuono.wasm demo-loop.wav /tmp/site/
+          cp -r dsp /tmp/site/dsp
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: /tmp/site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish
+        id: deployment
+        uses: actions/deploy-pages@v4
