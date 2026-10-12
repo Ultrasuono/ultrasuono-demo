@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ultrasuono — Weather listening room</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><a class="brand" href="./">ULTRASUONO<span>®</span></a><span class="edition">DIGITAL PLAYGROUND / 001</span><span class="badge">BOZZA · BASIC MODE</span></header>
+  <main>
+    <section class="intro"><p class="eyebrow">UN PAESAGGIO CHE PUOI ASCOLTARE</p><h1>Il clima cambia.<br>Il suono lo segue.</h1><p>Un ingresso audio, 500 ambienti possibili. Temperatura, umidità e luce si muovono lentamente e trasformano ciò che ascolti.</p></section>
+    <section class="instrument" aria-label="Ultrasuono digitale">
+      <div class="landscape"><div class="landscape-top"><span>AMBIENTE SIMULATO</span><span id="station-id">001 / 500</span></div><div class="orb" aria-hidden="true"></div><div class="landscape-bottom"><p id="place-context"></p><h2 id="place-name"></h2><p id="local-time"></p></div><span class="vertical">SYNTHETIC WEATHER / CONTINUOUS DRIFT</span></div>
+      <div class="console">
+        <div class="section-title"><span>01 / AMBIENTE</span><span class="live"><i></i> IN EVOLUZIONE</span></div>
+        <div class="station-picker"><label for="station">Scegli un paesaggio</label><div><select id="station"></select><button id="random" aria-label="Scegli un ambiente casuale">↗</button></div></div>
+        <div class="readings"><div><span>TEMPERATURA</span><strong id="temperature"></strong><small>freddo ↔ distorsione</small></div><div><span>UMIDITÀ</span><strong id="humidity"></strong><small>gate ↔ riverbero</small></div><div><span>LUCE</span><strong id="light"></strong><small>scuro ↔ brillante</small></div></div>
+        <div class="section-title audio-title"><span>02 / SORGENTE AUDIO</span><span id="audio-state" role="status">IN ATTESA</span></div>
+        <div class="sources"><button id="demo" class="selected">Suono demo</button><button id="mic">Microfono</button><label class="file-button" for="file">File audio<input id="file" type="file" accept="audio/*"></label></div>
+        <p id="source-info">Loop originale · 37 s · batteria, basso, accordi e arpeggi stereo.</p>
+        <div class="transport"><button id="play">▶ Avvia ascolto</button><label class="loop"><input id="loop" type="checkbox" checked> Loop file</label></div>
+        <div class="controls"><label for="mix">DRY / WET <output id="mix-value">65%</output><input id="mix" type="range" min="0" max="100" value="65"></label><label for="volume">VOLUME <output id="volume-value">35%</output><input id="volume" type="range" min="0" max="100" value="35"></label></div>
+        <p id="message" role="status">Audio locale: i tuoi file e il microfono non vengono inviati a un server.</p>
+      </div>
+    </section>
+    <footer><span><i></i> METEO SIMULATO, NON OSSERVAZIONI REALI</span><p>Prototipo sonoro Web Audio. Gli effetti interpretano le mappature di Ultrasuono; non è ancora il motore DSP originale. Con il microfono, usa le cuffie per evitare feedback.</p><span>OPEN SOURCE / MADE TO LISTEN</span></footer>
+  </main><script type="module" src="app.js"></script>
+</body>
+</html>
