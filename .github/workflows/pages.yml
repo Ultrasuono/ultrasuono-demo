@@ -18,6 +18,10 @@ jobs:
       - name: Check weather and native DSP
         run: |
           node check.mjs
+          node atlas/check.mjs
+          node atlas/check-biomes.mjs
+          node atlas/check-tiles.mjs
+          node atlas/check-terraces.mjs
           g++ dsp/AudioProcessor.cpp dsp/check.cpp dsp/vendor/Effects/*.cpp dsp/vendor/Filters/*.cpp -Idsp -Idsp/vendor -Idsp/vendor/Utility -std=c++17 -O2 -o /tmp/check-dsp
           /tmp/check-dsp
       - name: Install pinned Emscripten
@@ -33,6 +37,8 @@ jobs:
           mkdir /tmp/site
           cp index.html style.css app.js weather.mjs ultrasuono-worklet.js ultrasuono.wasm demo-loop.wav /tmp/site/
           cp -r dsp /tmp/site/dsp
+          cp -r atlas /tmp/site/atlas
+          cp ultrasuono.wasm /tmp/site/atlas/ultrasuono.wasm
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
