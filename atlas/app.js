@@ -61,9 +61,9 @@ function updateUI(){climate=climateAt(pos.x,pos.z,cloudTime.value);climateLogo?.
 let recording;
 let ctx,worklet,source,stream,buffer,mode='demo',fileBuffer,playing=false,busy=false;
 function applyAudio(){if(!worklet)return;for(const [k,v] of Object.entries({temperature:effectTemperature(climate.temperature),humidity:climate.humidity,light:climate.light,mix:+$('mix').value/100,volume:+$('volume').value/100}))worklet.parameters.get(k).setTargetAtTime(v,ctx.currentTime,.3);}
-function stop(){recording?.stop();if(source){try{source.stop();}catch{}source.disconnect();source=null;}stream?.getTracks().forEach(t=>t.stop());stream=null;playing=false;$('play-label').textContent='start listening';$('play').classList.remove('playing');}
+function stop(){recording?.stop();if(source){try{source.stop();}catch{}source.disconnect();source=null;}stream?.getTracks().forEach(t=>t.stop());stream=null;playing=false;$('play-label').textContent='play';$('play').classList.remove('playing');$('play').setAttribute('aria-label','Play audio');}
 async function initAudio(){if(worklet)return;ctx??=new AudioContext({sampleRate:48000});await ctx.resume();const r=await fetch('./ultrasuono.wasm');if(!r.ok)throw Error('DSP non disponibile');const module=await WebAssembly.compile(await r.arrayBuffer());await ctx.audioWorklet.addModule('./ultrasuono-worklet.js');worklet=new AudioWorkletNode(ctx,'ultrasuono',{outputChannelCount:[2],processorOptions:{module}});worklet.connect(ctx.destination);worklet.onprocessorerror=()=>{stop();$('status').textContent='Errore DSP: ricarica la pagina.';};applyAudio();}
-async function start(){await initAudio();await ctx.resume();if(mode==='mic'){if(!navigator.mediaDevices)throw Error('Microfono non disponibile');stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});source=ctx.createMediaStreamSource(stream);}else{if(mode==='demo'&&!buffer){const r=await fetch('./demo-loop.wav');if(!r.ok)throw Error('Loop non disponibile');buffer=await ctx.decodeAudioData(await r.arrayBuffer());}const audio=mode==='file'?fileBuffer:buffer;if(!audio)throw Error('Seleziona un file');source=ctx.createBufferSource();source.buffer=audio;source.loop=true;}source.connect(worklet);source.start?.();playing=true;$('play-label').textContent='stop listening';$('play').classList.add('playing');}
+async function start(){await initAudio();await ctx.resume();if(mode==='mic'){if(!navigator.mediaDevices)throw Error('Microfono non disponibile');stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});source=ctx.createMediaStreamSource(stream);}else{if(mode==='demo'&&!buffer){const r=await fetch('./demo-loop.wav');if(!r.ok)throw Error('Loop non disponibile');buffer=await ctx.decodeAudioData(await r.arrayBuffer());}const audio=mode==='file'?fileBuffer:buffer;if(!audio)throw Error('Seleziona un file');source=ctx.createBufferSource();source.buffer=audio;source.loop=true;}source.connect(worklet);source.start?.();playing=true;$('play-label').textContent='stop';$('play').classList.add('playing');$('play').setAttribute('aria-label','Stop audio');}
 $('record').onclick=async()=>{
  if(busy)return;
  if(recording?.active){recording.stop();return;}
@@ -73,7 +73,7 @@ $('record').onclick=async()=>{
   recording??=createRecording(ctx,worklet,(active,finalizing=false)=>{
    $('record').disabled=finalizing;$('record').classList.toggle('recording',active);
    $('record').setAttribute('aria-pressed',String(active));
-   $('record-label').textContent=active?'stop & save':finalizing?'saving…':'record audio';
+   $('record-label').textContent=active?'save':finalizing?'saving…':'rec';
   });
   recording.start();
  }catch(error){$('status').textContent=error.message;$('record-label').textContent='record unavailable';}

@@ -12,8 +12,11 @@
 <div class="metric"><div class="icon"><img src="assets/demo/Group%2013260.svg" width="64" height="64" alt="Light"></div><output id="light">90%</output></div>
 <div class="metric"><div class="icon"><img src="assets/demo/Vector.svg" width="27" height="51" alt="Temperature"></div><output id="temperature">40°</output></div>
 </div>
+<div class="audio-controls">
 <label class="mix-control" for="mix">DRY/WET<input id="mix" type="range" min="0" max="100" value="96" aria-label="Dry/wet"></label>
-<div class="audio-controls"><div class="sources" aria-label="Audio source"><button id="demo" class="active" aria-pressed="true">DEMO</button><button id="mic" aria-pressed="false">MICROPHONE</button><label id="file-tab" for="file">FILE<input id="file" type="file" accept="audio/*" aria-label="Choose audio file"></label></div><button id="play"><span class="play-icon" aria-hidden="true"></span><span id="play-label">start listening</span></button><button id="record" aria-pressed="false"><span class="record-dot" aria-hidden="true"></span><span id="record-label">record audio</span></button></div>
+<div class="sources" aria-label="Audio source"><button id="demo" class="active" aria-pressed="true">DEMO</button><button id="mic" aria-pressed="false">MIC</button><label id="file-tab" for="file">FILE<input id="file" type="file" accept="audio/*" aria-label="Choose audio file"></label></div>
+<div class="transport"><button id="record" aria-pressed="false" aria-label="Record processed audio"><span class="record-dot" aria-hidden="true"></span><span id="record-label">rec</span></button><button id="play" aria-label="Play audio"><span class="play-icon" aria-hidden="true"></span><span id="play-label">play</span></button></div>
+</div>
 <p id="status" role="status" class="sr-only"></p>
 <div hidden><meter id="temp-meter"></meter><meter id="humidity-meter"></meter><meter id="light-meter"></meter><span id="coords"></span><span id="footer-coords"></span><span id="altitude"></span><input id="volume" type="range" value="30"></div>
 </aside></main></div><script type="module" src="app.js"></script></body></html>
