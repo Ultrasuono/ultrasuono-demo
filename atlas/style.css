@@ -108,3 +108,8 @@ h1{font-size:clamp(22px,5.3cqh,39.3px);margin-left:0;letter-spacing:-.025em}
 }
 @media(min-width:701px){h1{width:100%;font-size:12.6cqw;letter-spacing:0;white-space:nowrap;text-align:justify;text-align-last:justify}}
 @media(min-width:701px){h1{text-align:left;text-align-last:auto;letter-spacing:0}}
+#mix{--fill:96%;border:0;outline:none;border-radius:0}
+#mix:focus-visible{outline:1px solid #aaa;outline-offset:3px}
+#mix::-webkit-slider-runnable-track{background:linear-gradient(to right,#fff 0 var(--fill),#555 var(--fill) 100%)}
+#mix::-moz-range-track{background:#555}
+#mix::-moz-range-progress{height:6px;background:#fff}

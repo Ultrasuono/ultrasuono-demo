@@ -6,6 +6,9 @@ import {groundY} from './tile-data.mjs';
 import {createClimateLogo} from './logo/view.js';
 import {climate as logoClimate} from './logo/climate.mjs';
 const $=id=>document.getElementById(id),host=$('map');
+function updateMixTrack(){const slider=$('mix');slider.style.setProperty('--fill',`${slider.value}%`);}
+$('mix').addEventListener('input',updateMixTrack);updateMixTrack();
+
 const climateHeading=document.querySelector('h1');
 function fitClimateHeading(){
  if(!climateHeading.clientWidth)return;
