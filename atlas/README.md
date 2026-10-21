@@ -26,3 +26,7 @@ node check-terraces.mjs
 ```
 
 Nessuna API meteo: terreno e clima sono simulati nel browser. I settori vengono generati in un worker mentre si esplora. La cartella contiene il modulo WASM per conservare questa anteprima; sorgenti DSP, script di ricompilazione e licenze sono nella cartella ../dsp della repository. Three.js conserva il proprio avviso di licenza nei moduli inclusi.
+
+## Registrazione
+Premere record audio per registrare l'uscita DSP con gli effetti attuali; stop & save scarica il file localmente. Il formato è scelto tra quelli supportati dal browser (WebM oppure M4A/MP4). Fermare l'ascolto o cambiare sorgente conclude anche la registrazione. Nessun audio viene caricato su un server.
+

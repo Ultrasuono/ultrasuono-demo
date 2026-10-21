@@ -1,3 +1,4 @@
+import {createRecording} from './recording.js';
 import * as T from './three.module.js';
 import {height,climateAt,effectTemperature} from './terrain.mjs';
 import {createTiles} from './tiles.js';
@@ -57,11 +58,27 @@ host.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','Arr
 host.addEventListener('keyup',e=>keys.delete(e.key));host.addEventListener('blur',()=>{keys.clear();drag=false;});
 document.querySelectorAll('[data-dx]').forEach(b=>b.onclick=()=>{target={x:target.x+ +b.dataset.dx,z:target.z+ +b.dataset.dz};});
 function updateUI(){climate=climateAt(pos.x,pos.z,cloudTime.value);climateLogo?.update({...climate,temperature:effectTemperature(climate.temperature)});const palette=logoClimate(effectTemperature(climate.temperature),climate.humidity,climate.light*100);travelerLight.color.set(palette.color[0]).lerp(new T.Color(palette.color[1]),palette.color[2]);travelerLight.intensity=3+palette.glow*3;travelerLight.position.set(pos.x,groundY(height(pos.x,pos.z))+.45,pos.z);$('temperature').textContent=`${Math.round(climate.temperature)}°`;$('humidity').textContent=`${Math.round(climate.humidity)}%`;$('light').textContent=`${Math.round(climate.light*100)}%`;$('temp-meter').value=climate.temperature;$('humidity-meter').value=climate.humidity;$('light-meter').value=climate.light*100;$('region').textContent=({'Costa':'COAST','Cime fredde':'COLD PEAKS','Montagne calde':'WARM MOUNTAINS','Montagne temperate':'TEMPERATE MOUNTAINS','Foresta umida':'HUMID FOREST','Foresta tropicale':'TROPICAL FOREST','Deserto':'DESERT','Prateria secca':'DRY GRASSLAND','Pendici temperate':'TEMPERATE HILLS'})[climate.region]||climate.region;const coords=`X ${((pos.x+4)*12.5).toFixed(1)} / Y ${((pos.z+4)*12.5).toFixed(1)}`;$('coords').textContent=$('footer-coords').textContent=coords;$('altitude').textContent=`QUOTA ${climate.altitude} m`;applyAudio();}
+let recording;
 let ctx,worklet,source,stream,buffer,mode='demo',fileBuffer,playing=false,busy=false;
 function applyAudio(){if(!worklet)return;for(const [k,v] of Object.entries({temperature:effectTemperature(climate.temperature),humidity:climate.humidity,light:climate.light,mix:+$('mix').value/100,volume:+$('volume').value/100}))worklet.parameters.get(k).setTargetAtTime(v,ctx.currentTime,.3);}
-function stop(){if(source){try{source.stop();}catch{}source.disconnect();source=null;}stream?.getTracks().forEach(t=>t.stop());stream=null;playing=false;$('play-label').textContent='start listening';$('play').classList.remove('playing');}
+function stop(){recording?.stop();if(source){try{source.stop();}catch{}source.disconnect();source=null;}stream?.getTracks().forEach(t=>t.stop());stream=null;playing=false;$('play-label').textContent='start listening';$('play').classList.remove('playing');}
 async function initAudio(){if(worklet)return;ctx??=new AudioContext({sampleRate:48000});await ctx.resume();const r=await fetch('./ultrasuono.wasm');if(!r.ok)throw Error('DSP non disponibile');const module=await WebAssembly.compile(await r.arrayBuffer());await ctx.audioWorklet.addModule('./ultrasuono-worklet.js');worklet=new AudioWorkletNode(ctx,'ultrasuono',{outputChannelCount:[2],processorOptions:{module}});worklet.connect(ctx.destination);worklet.onprocessorerror=()=>{stop();$('status').textContent='Errore DSP: ricarica la pagina.';};applyAudio();}
 async function start(){await initAudio();await ctx.resume();if(mode==='mic'){if(!navigator.mediaDevices)throw Error('Microfono non disponibile');stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});source=ctx.createMediaStreamSource(stream);}else{if(mode==='demo'&&!buffer){const r=await fetch('./demo-loop.wav');if(!r.ok)throw Error('Loop non disponibile');buffer=await ctx.decodeAudioData(await r.arrayBuffer());}const audio=mode==='file'?fileBuffer:buffer;if(!audio)throw Error('Seleziona un file');source=ctx.createBufferSource();source.buffer=audio;source.loop=true;}source.connect(worklet);source.start?.();playing=true;$('play-label').textContent='stop listening';$('play').classList.add('playing');}
+$('record').onclick=async()=>{
+ if(busy)return;
+ if(recording?.active){recording.stop();return;}
+ busy=true;$('record').disabled=true;
+ try{
+  if(!playing)await start();
+  recording??=createRecording(ctx,worklet,(active,finalizing=false)=>{
+   $('record').disabled=finalizing;$('record').classList.toggle('recording',active);
+   $('record').setAttribute('aria-pressed',String(active));
+   $('record-label').textContent=active?'stop & save':finalizing?'saving…':'record audio';
+  });
+  recording.start();
+ }catch(error){$('status').textContent=error.message;$('record-label').textContent='record unavailable';}
+ finally{busy=false;if(!recording?.active)$('record').disabled=false;}
+};
 $('play').onclick=async()=>{if(busy)return;busy=true;$('play').disabled=true;try{if(playing)stop();else await start();$('status').textContent=playing?'DSP originale attivo · audio locale. Con il microfono usa le cuffie.':'Naviga per cambiare clima e suono.';}catch(e){stop();$('status').textContent=e.message;}finally{busy=false;$('play').disabled=false;}};
 function setMode(next){stop();mode=next;for(const id of ['demo','mic']){$(id).classList.toggle('active',id===mode);$(id).setAttribute('aria-pressed',String(id===mode));}$('file-tab').classList.toggle('active',mode==='file');}
 $('demo').onclick=()=>{if(!busy)setMode('demo');};$('mic').onclick=()=>{if(!busy)setMode('mic');};$('file').onchange=async e=>{const f=e.target.files[0];if(!f||busy)return;busy=true;setMode('file');fileBuffer=null;try{if(f.size>50*1024*1024)throw Error('Limite file: 50 MB');await initAudio();fileBuffer=await ctx.decodeAudioData(await f.arrayBuffer());$('status').textContent=`File pronto: ${f.name}`;}catch(e){$('status').textContent=e.message;}finally{busy=false;}};for(const id of ['mix','volume'])$(id).oninput=applyAudio;window.addEventListener('pagehide',stop);
