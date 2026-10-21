@@ -6,6 +6,17 @@ import {groundY} from './tile-data.mjs';
 import {createClimateLogo} from './logo/view.js';
 import {climate as logoClimate} from './logo/climate.mjs';
 const $=id=>document.getElementById(id),host=$('map');
+const climateHeading=document.querySelector('h1');
+function fitClimateHeading(){
+ if(!climateHeading.clientWidth)return;
+ climateHeading.style.fontSize='20px';
+ const range=document.createRange();range.selectNodeContents(climateHeading);
+ const width=range.getBoundingClientRect().width;
+ if(width)climateHeading.style.fontSize=`${20*climateHeading.clientWidth/width}px`;
+}
+new ResizeObserver(fitClimateHeading).observe(document.querySelector('aside'));
+document.fonts.ready.then(fitClimateHeading);
+
 const scene=new T.Scene();scene.background=new T.Color('#030303');
 const camera=new T.OrthographicCamera(-4.6,4.6,3.6,-3.6,.1,100);camera.position.set(0,7,7.6);camera.lookAt(0,.1,0);
 const renderer=new T.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.25));renderer.outputColorSpace=T.SRGBColorSpace;host.prepend(renderer.domElement);
