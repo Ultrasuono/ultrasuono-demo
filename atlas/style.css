@@ -16,3 +16,30 @@ h1{position:static;margin:calc(3px * var(--ui)) 0 calc(21px * var(--ui)) calc(12
 .biome-label{left:clamp(16px,3.3vw,50px);bottom:clamp(16px,4.8dvh,48px)}
 @media(max-width:1100px),(max-height:800px){.app-frame{--ui:.8}main{grid-template-columns:minmax(0,1fr) 290px}}
 @media(max-width:700px){.app-frame{--ui:.65}.wordmark{width:218px}.website{font-size:14px}main{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;top:88px;bottom:12px;left:12px;right:12px}aside{border-left:0;border-top:1px solid #aaa;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px;overflow:visible}h1{display:none}.metrics{grid-column:1/-1;display:flex;justify-content:space-between;margin:0}.metric{height:42px;gap:8px}.icon{width:32px;height:32px}.metric:nth-child(1) img{width:27px;height:auto}.metric:nth-child(2) img{width:32px;height:auto}.metric:nth-child(3) img{width:14px;height:auto}.metric output{font-size:21px}.mix-control{align-self:center;margin:0;font-size:16px}.audio-controls{padding:0;margin:0}.sources{font-size:11px;margin-bottom:12px;gap:8px}#play{height:40px;font-size:15px}.biome-label{font-size:12px;bottom:16px;left:16px}}
+@media(min-width:701px){
+aside{container-type:size;overflow:hidden;padding:clamp(10px,3cqh,24px)}
+h1{font-size:clamp(18px,5cqh,39.3px);margin:0 0 clamp(8px,2.5cqh,21px);line-height:1.2}
+.metrics{flex:1 1 0;min-height:0;max-height:312px;display:grid;grid-template-rows:repeat(3,minmax(0,1fr));margin-right:10px}
+.metric{height:auto;min-height:0}
+.icon{width:clamp(24px,8cqh,64px);height:clamp(24px,8cqh,64px)}
+.metric:nth-child(1) img{width:clamp(20px,6.65cqh,52px);height:auto}
+.metric:nth-child(2) img{width:clamp(24px,8.2cqh,64px);height:auto}
+.metric:nth-child(3) img{width:clamp(12px,3.46cqh,27px);height:auto}
+.metric output{font-size:clamp(18px,4.5cqh,35px)}
+.mix-control{font-size:clamp(14px,3.2cqh,25px);margin:clamp(8px,3cqh,24px) 10px clamp(8px,4cqh,32px) 0}
+.audio-controls{padding-top:clamp(4px,2cqh,16px)}
+.sources{font-size:clamp(11px,2.56cqh,20px);margin-bottom:clamp(10px,4.86cqh,38px);gap:8px}
+#play{height:clamp(34px,7.94cqh,62px);font-size:clamp(14px,2.82cqh,22px)}
+}
+
+@media(min-width:701px){
+h1{font-size:clamp(18px,4.2cqh,32px)}
+.metric output{font-size:clamp(18px,3.7cqh,28px)}
+.icon{width:clamp(24px,6.7cqh,52px);height:clamp(24px,6.7cqh,52px)}
+.metric:nth-child(1) img{width:clamp(20px,5.5cqh,43px)}
+.metric:nth-child(2) img{width:clamp(24px,6.7cqh,52px)}
+.metric:nth-child(3) img{width:clamp(12px,2.8cqh,22px)}
+.mix-control{font-size:clamp(14px,2.7cqh,21px)}
+.sources{font-size:clamp(11px,2.1cqh,16px)}
+#play{font-size:clamp(14px,2.4cqh,18px);height:clamp(34px,6.7cqh,52px)}
+}
