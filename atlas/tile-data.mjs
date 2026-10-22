@@ -15,10 +15,12 @@ export function makeTile(tx,tz){
   const seed=Math.abs(Math.sin(i*127.1+j*311.7)),x=i*plantSpacing+Math.sin(j*12.7)*.045,z=j*plantSpacing+Math.cos(i*7.3)*.045,h=height(x,z);if(h<.025)continue;
   const {biome,zone}=landClimate(x,z,h);
   const cluster=Math.sin(x*2.3+Math.cos(z*1.7))+Math.cos(z*2.1-x*.5),y=groundY(h)+.012;
-  const marks=biomeDetails(zone,x,y,z,seed);details.push(...marks.ground);
-  if(zone==='hot-wet'&&h<1.1){forest.push(...marks.plants);}
-  else if(zone==='cold-dry'){details.push(...marks.plants);}
-  else if((zone==='cold-wet'&&seed>.4&&h<1.4)||(h<.72&&((biome==='forest'&&seed>.26)||(biome==='grassland'&&cluster>.85&&seed>.9)))){const tall=.12+seed*.12;segment(forest,[x,y,z],[x,y+tall,z]);
+  const sparse=Math.abs(Math.sin(i*73.9+j*191.3)),grove=cluster>-.15&&sparse<.5;
+  const marks=biomeDetails(zone,x,y,z,seed);
+  if(sparse<.18)details.push(...marks.ground);
+  if(zone==='hot-wet'&&h<1.1){if(grove)forest.push(...marks.plants);}
+  else if(zone==='cold-dry'){if(sparse<.18)details.push(...marks.plants);}
+  else if(grove&&((zone==='cold-wet'&&seed>.4&&h<1.4)||(h<.72&&((biome==='forest'&&seed>.26)||(biome==='grassland'&&cluster>.85&&seed>.9))))){const tall=.12+seed*.12;segment(forest,[x,y,z],[x,y+tall,z]);
    for(let tier=0;tier<5;tier++){const up=tall*(.3+tier*.13),width=(1-tier/6)*tall*.29;for(const [dx,dz] of [[1,0],[-1,0],[0,1],[0,-1]]){segment(forest,[x,y+up+tall*.15,z],[x+dx*width,y+up-tall*.06,z+dz*width]);segment(forest,[x+dx*width,y+up-tall*.06,z+dz*width],[x,y+up,z]);}}
   }else if(biome==='desert'&&seed>.63&&Math.abs(Math.sin(i*73.9+j*191.3))<.1564){
    const tall=.13+seed*.11,r=.012;
