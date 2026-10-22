@@ -20,6 +20,7 @@ jobs:
           node check.mjs
           node atlas/check.mjs
           node atlas/check-biomes.mjs
+          node atlas/check-visual-biomes.mjs
           node atlas/check-tiles.mjs
           node atlas/check-terraces.mjs
           node atlas/check-recording.mjs

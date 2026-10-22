@@ -1,3 +1,4 @@
+import {visualBiome} from './biome-style.mjs';
 const fract=x=>x-Math.floor(x),mix=(a,b,t)=>a+(b-a)*t;
 function hash(x,y){return fract(Math.sin(x*127.1+y*311.7+41)*43758.5453);}
 function noise(x,y){const i=Math.floor(x),j=Math.floor(y);let u=fract(x),v=fract(y);u=u*u*(3-2*u);v=v*v*(3-2*v);return mix(mix(hash(i,j),hash(i+1,j),u),mix(hash(i,j+1),hash(i+1,j+1),u),v);}
@@ -33,10 +34,12 @@ export function landClimate(x,z,h=height(x,z)){
  const transition=clamp((regionX+3.5)/2.2,0,1),dryness=1-transition*transition*(3-2*transition);
  const heat=mix(-clamp(x,-8,8)*1.5,(noise(x*.09-17,z*.09+39)-.5)*16,farBlend);
  const tropical=clamp((noise(x*.12-53,z*.12+71)-.35)/.35,0,1)*(1-dryness);
- const humidity=clamp(74-54*dryness+water*22+noise(x+20,z+20)*6-h*18+tropical*14,12,98),temperature=clamp(29-h*16+heat+dryness*14+tropical*12,-20,50);
+ const coldField=clamp((noise(x*.11+147,z*.11-83)-.45)/.3,0,1);
+ const cold=coldField*coldField*(3-2*coldField)*farBlend;
+ const humidity=clamp(74-54*dryness+water*22+noise(x+20,z+20)*6-h*18+tropical*14,12,98),temperature=clamp(29-h*16+heat+dryness*14+tropical*12-cold*48,-20,50);
  const biome=h<.025?'water':h>.72&&temperature<10?'alpine':humidity>=72&&temperature>3?'forest':humidity<=35&&temperature>22?'desert':humidity<55&&temperature>10?'drygrassland':'grassland';
- return {humidity,temperature,biome};
+ return {humidity,temperature,biome,zone:visualBiome(temperature,humidity)};
 }
 export function effectTemperature(temperature){return clamp(temperature<=20?temperature:20+(temperature-20)*2/3,-20,40);}
-export function climateAt(x,z,time=0){const h=height(x,z),{humidity,temperature,biome}=landClimate(x,z,h),cloud=cloudAt(x,z,time),exposure=exposureAt(x,z);
- return {temperature,humidity,biome,light:clamp(.025+.975*exposure*(1-cloud*.92),0,1),cloud,exposure,altitude:Math.round(Math.max(0,h)*2100),region:h<.035?'Costa':h>.55?(temperature<10?'Cime fredde':temperature>22?'Montagne calde':'Montagne temperate'):biome==='forest'?(temperature>=30?'Foresta tropicale':'Foresta umida'):biome==='desert'?'Deserto':biome==='drygrassland'?'Prateria secca':'Pendici temperate'};}
+export function climateAt(x,z,time=0){const h=height(x,z),{humidity,temperature,biome,zone}=landClimate(x,z,h),cloud=cloudAt(x,z,time),exposure=exposureAt(x,z);
+ return {temperature,humidity,biome,zone,light:clamp(.025+.975*exposure*(1-cloud*.92),0,1),cloud,exposure,altitude:Math.round(Math.max(0,h)*2100),region:h<.035?'Costa':zone==='cold-dry'?'Distesa gelata':zone==='cold-wet'?'Foresta boreale':zone==='hot-wet'?'Foresta tropicale':h>.55?(temperature<10?'Cime fredde':temperature>22?'Montagne calde':'Montagne temperate'):biome==='forest'?(temperature>=30?'Foresta tropicale':'Foresta umida'):biome==='desert'?'Deserto':biome==='drygrassland'?'Prateria secca':'Pendici temperate'};}

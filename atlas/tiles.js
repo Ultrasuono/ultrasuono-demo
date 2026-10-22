@@ -11,7 +11,7 @@ export function createTiles(scene,terrainMaterial){
  function remove(key){const group=tiles.get(key);if(!group)return;group.traverse(o=>o.geometry?.dispose());scene.remove(group);tiles.delete(key);}
  worker.onmessage=({data:{key,tile,error}})=>{pending.delete(key);if(error){console.error('Terreno:',error);return;}if(!wanted.has(key))return;
   const group=new T.Group(),geo=geometry(tile.positions);geo.setAttribute('color',new T.BufferAttribute(tile.colors,3));geo.computeVertexNormals();group.add(new T.Mesh(geo,terrainMaterial));
-  for(const [data,material] of [[tile.outlines,linesMaterial],[tile.forest,detailMaterial],[tile.rocks,detailMaterial],[tile.cacti,detailMaterial]])if(data.length)group.add(new T.LineSegments(geometry(data),material));
+  for(const [data,material] of [[tile.outlines,linesMaterial],[tile.forest,detailMaterial],[tile.rocks,detailMaterial],[tile.cacti,detailMaterial],[tile.details,detailMaterial]])if(data.length)group.add(new T.LineSegments(geometry(data),material));
   if(tile.ascii.length){const g=geometry(tile.ascii);g.setAttribute('glyph',new T.BufferAttribute(tile.glyphs,1));group.add(new T.Points(g,asciiMaterial));}
 
   tiles.set(key,group);scene.add(group);
