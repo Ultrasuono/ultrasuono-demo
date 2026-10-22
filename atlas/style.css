@@ -167,3 +167,5 @@ main{left:var(--frame-inset);right:var(--frame-inset)}
  .metric:last-child{grid-template-columns:clamp(32px,10vw,52px) auto;column-gap:7px}
  .metric:last-child output{width:4ch;text-align:left}
 }
+.transport #play{order:0}
+.transport #record{order:1}
