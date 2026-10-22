@@ -160,3 +160,10 @@ main{left:var(--frame-inset);right:var(--frame-inset)}
  .metric:last-child{justify-self:end;grid-template-columns:clamp(32px,10vw,52px) auto}
  .metric:last-child output{width:4ch;text-align:right}
 }
+/* Equal visible symbol-to-value gaps, not just equal icon boxes. */
+@media(max-width:700px){
+ .metric{column-gap:7px}
+ .metric .icon{justify-items:end}
+ .metric:last-child{grid-template-columns:clamp(32px,10vw,52px) auto;column-gap:7px}
+ .metric:last-child output{width:4ch;text-align:left}
+}
