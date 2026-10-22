@@ -141,3 +141,15 @@ h1{font-size:clamp(22px,5.3cqh,39.3px);margin-left:0;letter-spacing:-.025em}
  #mix::-moz-range-thumb{width:24px;height:24px;border-radius:6px}
 }
 .audio-error{position:absolute;left:12px;right:12px;bottom:160px;z-index:6;margin:0;padding:10px;border:1px solid #fd5920;background:#030303;color:#fff;font-size:12px;line-height:1.4}
+/* Share frame edges, and reserve stable columns for the climate readings. */
+.app-frame{--frame-inset:clamp(16px,3.175vw,48px)}
+main{left:var(--frame-inset);right:var(--frame-inset)}
+.wordmark{left:var(--frame-inset)}
+.website{right:var(--frame-inset)}
+.metric output{font-variant-numeric:tabular-nums}
+@media(max-width:700px){
+ .app-frame{--frame-inset:12px}
+ .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ .metric{display:grid;grid-template-columns:clamp(32px,10vw,52px) minmax(0,1fr);column-gap:clamp(4px,1vw,8px);justify-content:normal}
+ .metric output{text-align:left;font-size:clamp(18px,5vw,26px)}
+}
