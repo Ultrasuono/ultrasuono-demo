@@ -156,3 +156,7 @@ main{left:var(--frame-inset);right:var(--frame-inset)}
 /* Double the header-to-map breathing room. */
 @media(min-width:701px){main{top:calc(clamp(24px,4.68dvh,46px) + 38px * var(--ui) + 2 * clamp(16px,4.68dvh,46px))}}
 @media(max-width:700px){main{top:calc(clamp(24px,4.68dvh,46px) + max(min(218px,52vw) * 38 / 336,40px) + 24px)}}
+@media(max-width:700px){
+ .metric:last-child{justify-self:end;grid-template-columns:clamp(32px,10vw,52px) auto}
+ .metric:last-child output{width:4ch;text-align:right}
+}
