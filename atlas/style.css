@@ -169,3 +169,5 @@ main{left:var(--frame-inset);right:var(--frame-inset)}
 }
 .transport #play{order:0}
 .transport #record{order:1}
+@media(min-width:701px){main{top:calc(clamp(24px,4.68dvh,46px) + 38px * var(--ui) + 1.5 * clamp(16px,4.68dvh,46px))}}
+@media(max-width:700px){main{top:calc(clamp(24px,4.68dvh,46px) + max(min(218px,52vw) * 38 / 336,40px) + 16px)}}
