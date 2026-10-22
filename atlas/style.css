@@ -153,3 +153,6 @@ main{left:var(--frame-inset);right:var(--frame-inset)}
  .metric{display:grid;grid-template-columns:clamp(32px,10vw,52px) minmax(0,1fr);column-gap:clamp(4px,1vw,8px);justify-content:normal}
  .metric output{text-align:left;font-size:clamp(18px,5vw,26px)}
 }
+/* Double the header-to-map breathing room. */
+@media(min-width:701px){main{top:calc(clamp(24px,4.68dvh,46px) + 38px * var(--ui) + 2 * clamp(16px,4.68dvh,46px))}}
+@media(max-width:700px){main{top:calc(clamp(24px,4.68dvh,46px) + max(min(218px,52vw) * 38 / 336,40px) + 24px)}}
