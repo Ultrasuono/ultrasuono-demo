@@ -171,3 +171,14 @@ main{left:var(--frame-inset);right:var(--frame-inset)}
 .transport #record{order:1}
 @media(min-width:701px){main{top:calc(clamp(24px,4.68dvh,46px) + 38px * var(--ui) + 1.5 * clamp(16px,4.68dvh,46px))}}
 @media(max-width:700px){main{top:calc(clamp(24px,4.68dvh,46px) + max(min(218px,52vw) * 38 / 336,40px) + 16px)}}
+/* Distribute complete icon/value groups, rather than icon-only columns. */
+@media(max-width:700px){
+ .metrics{display:flex;justify-content:space-between;gap:8px}
+ .metric,.metric:last-child{display:grid;grid-template-columns:max-content 4ch;column-gap:7px;justify-self:auto;font-size:clamp(18px,5vw,26px);flex:none}
+ .metric .icon{width:auto;justify-items:center}
+ .metric output,.metric:last-child output{width:4ch;text-align:left;font-size:inherit}
+}
+@media(max-width:700px){
+ .metric,.metric:last-child{grid-template-columns:max-content max-content}
+ .metric output,.metric:last-child output{width:auto}
+}
