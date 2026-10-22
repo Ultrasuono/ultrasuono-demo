@@ -23,6 +23,7 @@ jobs:
           node atlas/check-tiles.mjs
           node atlas/check-terraces.mjs
           node atlas/check-recording.mjs
+          node atlas/check-audio-start.mjs
           g++ dsp/AudioProcessor.cpp dsp/check.cpp dsp/vendor/Effects/*.cpp dsp/vendor/Filters/*.cpp -Idsp -Idsp/vendor -Idsp/vendor/Utility -std=c++17 -O2 -o /tmp/check-dsp
           /tmp/check-dsp
       - name: Install pinned Emscripten
