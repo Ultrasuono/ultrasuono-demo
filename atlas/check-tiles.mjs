@@ -5,7 +5,7 @@ const first=makeTile(0,0),next=makeTile(1,0);
 assert.deepEqual(first,makeTile(0,0));
 for(const tile of [first,next]){
  assert.equal(tile.positions.length,tile.colors.length);
- assert.equal(tile.ascii.length/3,tile.glyphs.length);
+ assert.deepEqual(Object.keys(tile).sort(),['colors','outlines','positions']);
  for(const values of Object.values(tile))for(const v of values)assert.ok(Number.isFinite(v));
 }
 // Neighbouring sectors evaluate the same height at their shared boundary.
@@ -19,11 +19,5 @@ for(let x=-60;x<60;x+=.8){const keys=tileKeys(x,x*.4);assert.equal(keys.length,9
 const before=new Set(tileKeys(2.9,0)),after=new Set(tileKeys(3.1,0));assert.equal([...after].filter(key=>!before.has(key)).length,3);
 assert.ok(height(1.2,-1.1)>1);
 const initial=tileKeys(.15,.65).map(key=>makeTile(...key.split(',').map(Number)));
-const humid=makeTile(0,0),desert=makeTile(-2,0);
-assert.ok(humid.forest.length>0&&humid.forest.length<40*246,'Keep humid vegetation in sparse groves');
-assert.ok(desert.cacti.length>0);
-assert.ok(desert.forest.length<humid.forest.length);
-for(const value of desert.cacti)assert.ok(Number.isFinite(value));
-console.log('OK: sparse forest groves in humid sectors and finite cactus geometry in arid sectors.');
 console.log('OK: deterministic sectors, matching seams, bounded 9-sector window, 3 new sectors per crossing, taller peaks.');
-console.log(JSON.stringify({initialTerrainTriangles:initial.reduce((n,t)=>n+t.positions.length/9,0),initialAsciiBatches:initial.filter(t=>t.ascii.length).length}));
+console.log(JSON.stringify({initialTerrainTriangles:initial.reduce((n,t)=>n+t.positions.length/9,0)}));
