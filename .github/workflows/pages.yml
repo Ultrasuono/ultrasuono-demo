@@ -1,4 +1,4 @@
-name: Build original DSP and publish demo
+name: Test and publish Ultrasuono Atlas
 on:
   push:
     branches: [main]
@@ -15,17 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check weather and native DSP
+      - name: Check atlas and native DSP
         run: |
           node check.mjs
-          node atlas/check.mjs
-          node atlas/check-biomes.mjs
-          node atlas/check-visual-biomes.mjs
-          node atlas/check-tiles.mjs
-          node atlas/check-terraces.mjs
-          node atlas/check-recording.mjs
-          node atlas/check-audio-start.mjs
-          node atlas/check-motion.mjs
+          node check-biomes.mjs
+          node check-visual-biomes.mjs
+          node check-tiles.mjs
+          node check-terraces.mjs
+          node check-recording.mjs
+          node check-audio-start.mjs
+          node check-motion.mjs
           g++ dsp/AudioProcessor.cpp dsp/check.cpp dsp/vendor/Effects/*.cpp dsp/vendor/Filters/*.cpp -Idsp -Idsp/vendor -Idsp/vendor/Utility -std=c++17 -O2 -o /tmp/check-dsp
           /tmp/check-dsp
       - name: Install pinned Emscripten
@@ -39,10 +38,11 @@ jobs:
           bash dsp/build.sh
           node dsp/check-wasm.mjs
           mkdir /tmp/site
-          cp index.html style.css app.js weather.mjs ultrasuono-worklet.js ultrasuono.wasm demo-loop.wav /tmp/site/
+          cp index.html style.css app.js audio-start.mjs biome-style.mjs motion.mjs recording.js terraces.mjs terrain.mjs tile-data.mjs tile-worker.js tiles.js three.module.js ultrasuono-worklet.js ultrasuono.wasm demo-loop.wav /tmp/site/
+          cp -r assets logo /tmp/site/
           cp -r dsp /tmp/site/dsp
-          cp -r atlas /tmp/site/atlas
-          cp ultrasuono.wasm /tmp/site/atlas/ultrasuono.wasm
+          mkdir /tmp/site/atlas
+          cp atlas/index.html /tmp/site/atlas/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

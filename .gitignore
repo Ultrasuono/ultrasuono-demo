@@ -1,2 +1,4 @@
 ultrasuono.wasm
 dsp-check.exe
+server*.log
+.preview-artifact/

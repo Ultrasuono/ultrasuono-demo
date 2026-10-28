@@ -1,4 +1,4 @@
-import * as THREE from './three.module.js';
+import * as THREE from '../three.module.js';
 import {climate} from './climate.mjs';
 export function createClimateLogo(stage){
 let active={temperature:20,humidity:50,light:1};

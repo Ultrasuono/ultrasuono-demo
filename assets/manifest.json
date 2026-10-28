@@ -1,0 +1,11 @@
+{
+  "reference": {"file": "design/MacBook Pro 14_ - 2.png", "sourceFrame": "331:5", "width": 1512, "height": 982},
+  "assets": [
+    {"file":"design/Group 13446.svg","sourceLayer":"Group 13446","role":"wordmark","width":336,"height":38},
+    {"file":"design/Group 13261.svg","sourceLayer":"Group 13261","role":"humidity","width":52,"height":47},
+    {"file":"design/Group 13260.svg","sourceLayer":"Group 13260","role":"sun","width":64,"height":64},
+    {"file":"design/Vector.svg","sourceLayer":"Vector","role":"thermometer","width":27,"height":51},
+    {"file":"FunnelDisplay-Regular.ttf","source":"Google Fonts / Funnel Display","role":"font"}
+  ],
+  "landscape": "No landscape raster supplied in ZIP; existing interactive terrain retained in the reference image slot. SVGs copied unchanged from user archive."
+}
