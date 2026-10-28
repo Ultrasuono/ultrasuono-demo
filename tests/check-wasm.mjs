@@ -1,6 +1,6 @@
 import {readFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
-const module=await WebAssembly.compile(readFileSync('ultrasuono.wasm'));
+const module=await WebAssembly.compile(readFileSync(new URL('../assets/audio/ultrasuono.wasm',import.meta.url)));
 console.log('WASM imports:',WebAssembly.Module.imports(module));
 const {exports:dsp}=await WebAssembly.instantiate(module,{
   wasi_snapshot_preview1:{proc_exit:()=>{throw Error('DSP exit');}},

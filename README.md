@@ -19,15 +19,24 @@ Microfono e file vengono elaborati localmente, senza caricamento su server. Il m
 
 Su telefono e tablet verticale i controlli si trovano sotto la mappa; su desktop e tablet orizzontale sono a destra. Il vecchio indirizzo `/atlas/` reindirizza alla stessa applicazione.
 
+## Struttura della repository
+
+- `src/` — interfaccia, terreno, worker, animazione del logo e AudioWorklet.
+- `assets/` — grafica originale, font, modello del logo e audio.
+- `tests/` — controlli della simulazione, del movimento e del motore audio.
+- `scripts/` — server locale, generatore del loop e compilazione WASM.
+- `dsp/` — sorgenti C++ e licenze del DSP.
+- `atlas/index.html` — compatibilità con il vecchio indirizzo.
+
 ## Anteprima locale
 
 Con Node.js installato, dalla cartella della repository:
 
 ```sh
-node serve.cjs
+node scripts/serve.cjs
 ```
 
-Apri http://127.0.0.1:8780/. Per ascoltare serve anche `ultrasuono.wasm`, generato dal workflow di pubblicazione: puoi recuperarlo dall'artefatto Pages di GitHub Actions oppure compilarlo dai sorgenti.
+Apri http://127.0.0.1:8780/. Per ascoltare serve anche `assets/audio/ultrasuono.wasm`, generato dal workflow di pubblicazione: puoi recuperarlo dall'artefatto Pages di GitHub Actions oppure compilarlo dai sorgenti.
 
 ## Motore audio e build
 
@@ -36,29 +45,29 @@ Il DSP C++ originale è in `dsp/` e viene eseguito in WebAssembly tramite AudioW
 Con Emscripten **4.0.17** attivo, dalla radice, in Bash:
 
 ```sh
-bash dsp/build.sh
-node dsp/check-wasm.mjs
+bash scripts/build-dsp.sh
+node tests/check-wasm.mjs
 ```
 
-`make-demo.mjs` rigenera il loop audio originale incluso; non è una seconda applicazione.
+`scripts/make-demo.mjs` rigenera il loop audio originale incluso; non è una seconda applicazione.
 
 ## Verifiche e pubblicazione
 
 ```sh
-node check.mjs
-node check-biomes.mjs
-node check-visual-biomes.mjs
-node check-tiles.mjs
-node check-terraces.mjs
-node check-audio-start.mjs
-node check-recording.mjs
-node check-motion.mjs
+node tests/check.mjs
+node tests/check-biomes.mjs
+node tests/check-visual-biomes.mjs
+node tests/check-tiles.mjs
+node tests/check-terraces.mjs
+node tests/check-audio-start.mjs
+node tests/check-recording.mjs
+node tests/check-motion.mjs
 ```
 
 Il workflow `.github/workflows/pages.yml` esegue questi controlli, verifica il DSP nativo, compila e testa il modulo WASM e pubblica l'atlante su GitHub Pages. I test automatici non sostituiscono l'ascolto e le prove sui dispositivi reali, in particolare su iPhone.
 
 ## Asset e licenze
 
-`assets/design/` contiene wordmark, icone SVG originali e riferimento grafico forniti per il progetto; `assets/manifest.json` ne documenta la provenienza. Funnel Display è distribuito con la licenza in `assets/FunnelDisplay-OFL.txt`. Three.js conserva il proprio avviso di licenza nel modulo incluso.
+`assets/design/` contiene wordmark, icone SVG originali e riferimento grafico forniti per il progetto; `assets/manifest.json` ne documenta la provenienza. Funnel Display è distribuito con la licenza in `assets/FunnelDisplay-OFL.txt`. Three.js conserva il proprio avviso di licenza in `src/vendor/three.module.js`.
 
 Il DSP applicativo conserva la licenza in `dsp/ULTRASUONO-LICENSE`, attualmente proprietaria. DaisySP e ReverbSc mantengono le licenze in `dsp/vendor/`. I sorgenti DSP e lo script di build vengono distribuiti anche nel sito per permettere la ricompilazione del modulo. La simulazione nel browser non garantisce identità bit per bit con l'hardware Ultrasuono.

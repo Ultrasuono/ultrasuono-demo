@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import {height} from './terrain.mjs';
-import {makeTile,tileKeys,TILE_SIZE,TILE_RESOLUTION} from './tile-data.mjs';
+import {height} from '../src/terrain.mjs';
+import {makeTile,tileKeys,TILE_SIZE,TILE_RESOLUTION} from '../src/tile-data.mjs';
 const first=makeTile(0,0),next=makeTile(1,0);
 assert.deepEqual(first,makeTile(0,0));
 for(const tile of [first,next]){

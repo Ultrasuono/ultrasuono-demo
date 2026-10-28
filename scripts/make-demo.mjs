@@ -1,4 +1,4 @@
-// Original procedural composition; regenerate with node make-demo.mjs.
+// Original procedural composition; regenerate with node scripts/make-demo.mjs.
 import {writeFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
 const rate=44100,beat=60/104,duration=beat*64,length=Math.round(duration*rate);
@@ -39,5 +39,5 @@ for(let i=0;i<length;i++)for(let ch=0;ch<2;ch++){
   const fade=Math.min(1,i/(rate*.015),(length-1-i)/(rate*.025));
   wav.writeInt16LE(Math.round(channels[ch][i]/peak*.82*fade*32767),44+i*4+ch*2);
 }
-writeFileSync(new URL('demo-loop.wav',import.meta.url),wav);
+writeFileSync(new URL('../assets/audio/demo-loop.wav',import.meta.url),wav);
 console.log(`OK: original stereo loop, ${duration.toFixed(1)}s, peak normalized to 0.82, ${(wav.length/1024/1024).toFixed(1)} MB.`);

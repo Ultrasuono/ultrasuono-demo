@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {smoothElevation} from './motion.mjs';
+import {smoothElevation} from '../src/motion.mjs';
 for(const [from,to] of [[0,2],[2,-1]]){
  let y=from;
  for(let i=0;i<60;i++){const next=smoothElevation(y,to,1/60);assert.ok(next>=Math.min(y,to)&&next<=Math.max(y,to));y=next;}

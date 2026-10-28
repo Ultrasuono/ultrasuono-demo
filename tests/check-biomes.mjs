@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {landClimate,effectTemperature,height} from './terrain.mjs';
+import {landClimate,effectTemperature,height} from '../src/terrain.mjs';
 assert.equal(effectTemperature(-20),-20);
 assert.equal(effectTemperature(0),0);
 assert.equal(effectTemperature(20),20);

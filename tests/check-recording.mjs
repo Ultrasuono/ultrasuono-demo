@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {createRecording} from './recording.js';
+import {createRecording} from '../src/recording.js';
 const downloads=[],connections=[],changes=[];
 let supported='audio/mp4';
 globalThis.document={body:{append(){}},createElement(){return {click(){downloads.push(this.download);},remove(){}};}};

@@ -1,4 +1,4 @@
-import * as THREE from '../three.module.js';
+import * as THREE from '../vendor/three.module.js';
 import {climate} from './climate.mjs';
 export function createClimateLogo(stage){
 let active={temperature:20,humidity:50,light:1};
@@ -34,7 +34,7 @@ function change(){
   mesh.geometry.setDrawRange(0,Math.floor(mesh.geometry.index.count/3*visual.fullness)*3);
 }
 async function load(){
-  const [metaResponse,dataResponse]=await Promise.all([fetch(new URL('./logo.json',import.meta.url)),fetch(new URL('./logo.bin',import.meta.url))]);
+  const [metaResponse,dataResponse]=await Promise.all([fetch(new URL('../../assets/logo/logo.json',import.meta.url)),fetch(new URL('../../assets/logo/logo.bin',import.meta.url))]);
   if(!metaResponse.ok||!dataResponse.ok)throw Error('Geometria non disponibile');
   const meta=await metaResponse.json(),buffer=await dataResponse.arrayBuffer(),count=meta.vertices*3;
   if(buffer.byteLength!==(count*3+meta.triangles*3)*4)throw Error('Dimensioni del modello non valide');

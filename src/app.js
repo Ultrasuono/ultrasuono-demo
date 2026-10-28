@@ -1,7 +1,7 @@
 import {smoothElevation} from './motion.mjs';
 import {resumeAudio} from './audio-start.mjs';
 import {createRecording} from './recording.js';
-import * as T from './three.module.js';
+import * as T from './vendor/three.module.js';
 import {height,climateAt,effectTemperature} from './terrain.mjs';
 import {createTiles} from './tiles.js';
 import {groundY} from './tile-data.mjs';
@@ -86,12 +86,12 @@ function prepareAudio(){
  return resumeAudio(ctx,mode,navigator);
 }
 async function initAudio(){await prepareAudio();if(worklet)return;
- if(!ctx.audioWorklet)throw Error('AudioWorklet unavailable: open the HTTPS page in an updated browser.');const r=await fetch('./ultrasuono.wasm');if(!r.ok)throw Error('DSP non disponibile');const module=await WebAssembly.compile(await r.arrayBuffer());await ctx.audioWorklet.addModule('./ultrasuono-worklet.js');worklet=new AudioWorkletNode(ctx,'ultrasuono',{outputChannelCount:[2],processorOptions:{module}});worklet.connect(ctx.destination);worklet.onprocessorerror=()=>{stop();worklet.disconnect();worklet=null;recording=undefined;audioError('Audio processing failed. Tap PLAY to retry.');};applyAudio();}
+ if(!ctx.audioWorklet)throw Error('AudioWorklet unavailable: open the HTTPS page in an updated browser.');const r=await fetch(new URL('../assets/audio/ultrasuono.wasm',import.meta.url));if(!r.ok)throw Error('DSP non disponibile');const module=await WebAssembly.compile(await r.arrayBuffer());await ctx.audioWorklet.addModule(new URL('./ultrasuono-worklet.js',import.meta.url));worklet=new AudioWorkletNode(ctx,'ultrasuono',{outputChannelCount:[2],processorOptions:{module}});worklet.connect(ctx.destination);worklet.onprocessorerror=()=>{stop();worklet.disconnect();worklet=null;recording=undefined;audioError('Audio processing failed. Tap PLAY to retry.');};applyAudio();}
 async function start(){
  $('status').className='sr-only';
  await initAudio();
  if(ctx.state!=='running')await ctx.resume();
- if(ctx.state!=='running')throw Error('Audio paused by iPhone. Tap PLAY again with the page in the foreground.');if(mode==='mic'){if(!navigator.mediaDevices)throw Error('Microfono non disponibile');stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});source=ctx.createMediaStreamSource(stream);}else{if(mode==='demo'&&!buffer){const r=await fetch('./demo-loop.wav');if(!r.ok)throw Error('Loop non disponibile');buffer=await ctx.decodeAudioData(await r.arrayBuffer());}const audio=mode==='file'?fileBuffer:buffer;if(!audio)throw Error('Seleziona un file');source=ctx.createBufferSource();source.buffer=audio;source.loop=true;}source.connect(worklet);source.start?.();playing=true;$('play-label').textContent='stop';$('play').classList.add('playing');$('play').setAttribute('aria-label','Stop audio');}
+ if(ctx.state!=='running')throw Error('Audio paused by iPhone. Tap PLAY again with the page in the foreground.');if(mode==='mic'){if(!navigator.mediaDevices)throw Error('Microfono non disponibile');stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});source=ctx.createMediaStreamSource(stream);}else{if(mode==='demo'&&!buffer){const r=await fetch(new URL('../assets/audio/demo-loop.wav',import.meta.url));if(!r.ok)throw Error('Loop non disponibile');buffer=await ctx.decodeAudioData(await r.arrayBuffer());}const audio=mode==='file'?fileBuffer:buffer;if(!audio)throw Error('Seleziona un file');source=ctx.createBufferSource();source.buffer=audio;source.loop=true;}source.connect(worklet);source.start?.();playing=true;$('play-label').textContent='stop';$('play').classList.add('playing');$('play').setAttribute('aria-label','Stop audio');}
 $('record').onclick=async()=>{
  if(busy)return;
  if(recording?.active){recording.stop();return;}

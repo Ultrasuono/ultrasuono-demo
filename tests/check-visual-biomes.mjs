@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import {visualBiome} from './biome-style.mjs';
-import {height,landClimate} from './terrain.mjs';
-import {makeTile} from './tile-data.mjs';
+import {visualBiome} from '../src/biome-style.mjs';
+import {height,landClimate} from '../src/terrain.mjs';
+import {makeTile} from '../src/tile-data.mjs';
 const cases=[[-5,25,'cold-dry'],[-5,85,'cold-wet'],[35,85,'hot-wet'],[40,20,'hot-dry']];
 for(const [t,h,zone] of cases)assert.equal(visualBiome(t,h),zone);
 const locations=[[-80,-56,'cold-dry'],[-80,-54,'cold-wet'],[-80,-24,'hot-wet'],[-80,-23,'hot-dry']];

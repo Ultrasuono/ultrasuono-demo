@@ -17,15 +17,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check atlas and native DSP
         run: |
-          node check.mjs
-          node check-biomes.mjs
-          node check-visual-biomes.mjs
-          node check-tiles.mjs
-          node check-terraces.mjs
-          node check-recording.mjs
-          node check-audio-start.mjs
-          node check-motion.mjs
-          g++ dsp/AudioProcessor.cpp dsp/check.cpp dsp/vendor/Effects/*.cpp dsp/vendor/Filters/*.cpp -Idsp -Idsp/vendor -Idsp/vendor/Utility -std=c++17 -O2 -o /tmp/check-dsp
+          node tests/check.mjs
+          node tests/check-biomes.mjs
+          node tests/check-visual-biomes.mjs
+          node tests/check-tiles.mjs
+          node tests/check-terraces.mjs
+          node tests/check-recording.mjs
+          node tests/check-audio-start.mjs
+          node tests/check-motion.mjs
+          g++ dsp/AudioProcessor.cpp tests/check-dsp.cpp dsp/vendor/Effects/*.cpp dsp/vendor/Filters/*.cpp -Idsp -Idsp/vendor -Idsp/vendor/Utility -std=c++17 -O2 -o /tmp/check-dsp
           /tmp/check-dsp
       - name: Install pinned Emscripten
         run: |
@@ -35,12 +35,13 @@ jobs:
       - name: Build WebAssembly and check exports
         run: |
           source /tmp/emsdk/emsdk_env.sh
-          bash dsp/build.sh
-          node dsp/check-wasm.mjs
+          bash scripts/build-dsp.sh
+          node tests/check-wasm.mjs
           mkdir /tmp/site
-          cp index.html style.css app.js audio-start.mjs biome-style.mjs motion.mjs recording.js terraces.mjs terrain.mjs tile-data.mjs tile-worker.js tiles.js three.module.js ultrasuono-worklet.js ultrasuono.wasm demo-loop.wav /tmp/site/
-          cp -r assets logo /tmp/site/
-          cp -r dsp /tmp/site/dsp
+          cp index.html /tmp/site/
+          cp -r src assets dsp /tmp/site/
+          mkdir /tmp/site/scripts
+          cp scripts/build-dsp.sh /tmp/site/scripts/
           mkdir /tmp/site/atlas
           cp atlas/index.html /tmp/site/atlas/
       - uses: actions/configure-pages@v5

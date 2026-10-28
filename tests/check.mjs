@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {height,climateAt} from './terrain.mjs';
+import {height,climateAt} from '../src/terrain.mjs';
 let min=Infinity,max=-Infinity;
 for(let x=-4;x<=4;x+=.1)for(let z=-4;z<=4;z+=.1){const h=height(x,z),c=climateAt(x,z);assert.ok(Number.isFinite(h));assert.deepEqual(c,climateAt(x,z));assert.ok(c.temperature>=-20&&c.temperature<=50&&c.humidity>=0&&c.humidity<=100&&c.light>=0&&c.light<=1);assert.ok(Math.abs(height(x+.001,z)-h)<.02);min=Math.min(min,h);max=Math.max(max,h);}
 assert.ok(min<0&&max>.65);assert.ok(climateAt(1.2,-1.1).temperature<climateAt(-2,1).temperature);

@@ -1,4 +1,4 @@
-import * as T from './three.module.js';
+import * as T from './vendor/three.module.js';
 import {TILE_SIZE,tileKeys} from './tile-data.mjs';
 
 export function createTiles(scene,terrainMaterial){

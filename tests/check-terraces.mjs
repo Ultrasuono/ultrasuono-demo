@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {buildTerraces} from './terraces.mjs';
+import {buildTerraces} from '../src/terraces.mjs';
 const {positions,colors,outlines}=buildTerraces([[-.05,.15],[-.05,.15]],1,.1);
 assert.equal(colors.length,positions.length);assert.ok(positions.length>0&&outlines.length>0);
 assert.ok(colors.every(value=>value===0));
